@@ -1,0 +1,241 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "$description": "Currency Converter Soft Family",
+  "color": {
+    "$type": "color",
+    "primary": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.125,
+          0.459,
+          0.325
+        ],
+        "hex": "#207553"
+      }
+    },
+    "on-primary": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "hex": "#ffffff"
+      }
+    },
+    "primary-container": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.875,
+          0.925,
+          0.886
+        ],
+        "hex": "#dfece2"
+      }
+    },
+    "on-primary-container": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.11,
+          0.384,
+          0.278
+        ],
+        "hex": "#1c6247"
+      }
+    },
+    "surface": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.957,
+          0.945,
+          0.922
+        ],
+        "hex": "#f4f1eb"
+      }
+    },
+    "on-surface": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.133,
+          0.145,
+          0.157
+        ],
+        "hex": "#222528"
+      }
+    },
+    "surface-container": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.98,
+          0.976,
+          0.961
+        ],
+        "hex": "#faf9f5"
+      }
+    },
+    "on-surface-variant": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.349,
+          0.369,
+          0.376
+        ],
+        "hex": "#595e60"
+      }
+    },
+    "error": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.588,
+          0.235,
+          0.204
+        ],
+        "hex": "#963c34"
+      }
+    },
+    "error-container": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.961,
+          0.886,
+          0.867
+        ],
+        "hex": "#f5e2dd"
+      }
+    }
+  },
+  "spacing": {
+    "$type": "dimension",
+    "micro": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      }
+    },
+    "bezel": {
+      "$value": {
+        "value": 7,
+        "unit": "px"
+      }
+    },
+    "control": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      }
+    },
+    "card": {
+      "$value": {
+        "value": 30,
+        "unit": "px"
+      }
+    },
+    "section": {
+      "$value": {
+        "value": 80,
+        "unit": "px"
+      }
+    }
+  },
+  "rounded": {
+    "$type": "dimension",
+    "sm": {
+      "$value": {
+        "value": 17,
+        "unit": "px"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 27,
+        "unit": "px"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 39,
+        "unit": "px"
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      }
+    }
+  },
+  "typography": {
+    "display-lg": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Bricolage Grotesque",
+        "fontSize": {
+          "value": 76,
+          "unit": "px"
+        },
+        "fontWeight": 600,
+        "letterSpacing": {
+          "value": -0.045,
+          "unit": "em"
+        },
+        "lineHeight": 81
+      }
+    },
+    "headline-lg": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Bricolage Grotesque",
+        "fontSize": {
+          "value": 42,
+          "unit": "px"
+        },
+        "fontWeight": 600,
+        "letterSpacing": {
+          "value": -0.045,
+          "unit": "em"
+        },
+        "lineHeight": 45
+      }
+    },
+    "body-md": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Instrument Sans",
+        "fontSize": {
+          "value": 16,
+          "unit": "px"
+        },
+        "fontWeight": 400,
+        "lineHeight": 25
+      }
+    },
+    "label-lg": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Instrument Sans",
+        "fontSize": {
+          "value": 14,
+          "unit": "px"
+        },
+        "fontWeight": 600,
+        "lineHeight": 20
+      }
+    }
+  }
+}

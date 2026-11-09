@@ -1,3 +1,8 @@
 .idea
 *.iml
 target/
+node_modules/
+web/out/
+web/.next/
+web/test-results/
+web/playwright-report/

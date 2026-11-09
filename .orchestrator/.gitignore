@@ -1,0 +1,8 @@
+# Written by the orchestrator at every session launch, so tracking it makes the tree permanently dirty.
+/BACKLOG.md
+/prompt.txt
+/SUMMARY.md
+/INPUT_NEEDED.md
+/last-session-tail.txt
+/last-sighting.txt
+/evidence/

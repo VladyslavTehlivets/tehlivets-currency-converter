@@ -5,6 +5,7 @@ import { convertedAmountOn, EUR_TO_PLN, holdInTheBrowser, plantWorksheet, PLN_TO
 
 const MOST_TAB_STOPS = 60
 const PHONE_MENU_BREAKPOINT_PX = 768
+const WALKING_NINE_SCREENS_TIMEOUT_MS = 180_000
 
 interface TabStop {
   control: string | null
@@ -33,12 +34,16 @@ async function markTheVisibleControls(page: Page): Promise<string[]> {
 
 async function readTheFocusedControl(page: Page): Promise<TabStop> {
   return page.evaluate(async () => {
+    const SCROLL_IS_STILL_FOR_MS = 300
     const nextFrame = () => new Promise((done) => requestAnimationFrame(done))
-    let lastScroll = -1
-    while (window.scrollY !== lastScroll) {
-      lastScroll = window.scrollY
+    let lastScroll = window.scrollY
+    let stillSince = performance.now()
+    while (performance.now() - stillSince < SCROLL_IS_STILL_FOR_MS) {
       await nextFrame()
-      await nextFrame()
+      if (window.scrollY !== lastScroll) {
+        lastScroll = window.scrollY
+        stillSince = performance.now()
+      }
     }
     const focused = document.activeElement
     if (!focused || focused === document.body) return { control: null, name: 'body', focusIsVisible: false, inView: false }
@@ -96,6 +101,7 @@ for (const screen of SCREENS) {
     test.use({ viewport: screen.viewport })
 
     test('every action is reachable by keyboard with visible focus', async ({ browser, page, request }) => {
+      test.setTimeout(WALKING_NINE_SCREENS_TIMEOUT_MS)
       const missed: string[] = []
       const phoneMenu = screen.viewport.width < PHONE_MENU_BREAKPOINT_PX
 

@@ -11,7 +11,7 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 10_000 },
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
-  use: { baseURL: app, trace: 'retain-on-failure' },
+  use: { baseURL: app, trace: 'retain-on-failure', timezoneId: 'UTC' },
   projects: [
     { name: 'before-any-spec', testMatch: /\.setup\.ts$/ },
     {

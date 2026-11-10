@@ -62,3 +62,7 @@ export function resultRoute(amount: string, from: string, to: string, at = AT_TH
 export async function widthsOf(page: Page) {
   return page.evaluate(() => ({ scrolled: document.documentElement.scrollWidth, visible: window.innerWidth }))
 }
+
+export function convertedAmountOn(page: Page) {
+  return page.getByText('Converted amount', { exact: true }).locator('xpath=following-sibling::div[1]')
+}

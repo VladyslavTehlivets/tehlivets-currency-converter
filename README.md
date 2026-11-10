@@ -1,3 +1,17 @@
+# Currency converter
+
+## Build
+
+You must use JDK 21 and Maven 3.9 or later.
+
+```
+mvn -B verify
+```
+
+The `ci` workflow runs this command on each pull request and on each push to `base-functionality`.
+
+---
+
 **Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
 
 When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.

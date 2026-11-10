@@ -40,6 +40,19 @@ export function SiteHeader() {
         </span>
         Currency Converter
       </Link>
+      <Button
+        ref={menuToggle}
+        variant="muted"
+        size="commit"
+        shape="icon"
+        aria-controls={navigationId}
+        aria-expanded={menuIsOpen}
+        aria-label="Menu"
+        onClick={() => setMenuIsOpen((isOpen) => !isOpen)}
+        className="md:hidden"
+      >
+        <span aria-hidden="true">☰</span>
+      </Button>
       <nav
         id={navigationId}
         aria-label="Primary"
@@ -67,19 +80,6 @@ export function SiteHeader() {
       <NestedCtaLink href={CONVERT_ROUTE} className="max-md:hidden">
         Explore
       </NestedCtaLink>
-      <Button
-        ref={menuToggle}
-        variant="muted"
-        size="commit"
-        shape="icon"
-        aria-controls={navigationId}
-        aria-expanded={menuIsOpen}
-        aria-label="Menu"
-        onClick={() => setMenuIsOpen((isOpen) => !isOpen)}
-        className="md:hidden"
-      >
-        <span aria-hidden="true">☰</span>
-      </Button>
     </header>
   )
 }

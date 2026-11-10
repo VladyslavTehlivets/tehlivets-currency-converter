@@ -111,7 +111,7 @@ export function Converter() {
             </NestedCtaLink>
           </div>
         </div>
-        <div className="relative isolate min-w-0 before:absolute before:inset-x-0 before:-inset-y-[12%] before:-z-10 before:bg-(image:--gradient-halo) before:content-['']">
+        <div className="relative isolate min-w-0 before:absolute before:inset-x-0 before:-inset-y-[12%] before:pointer-events-none before:-z-10 before:bg-(image:--gradient-halo) before:content-['']">
           <Bezel>
             <Eyebrow>Your conversion</Eyebrow>
             {workingSurface}

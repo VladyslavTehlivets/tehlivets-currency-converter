@@ -15,7 +15,11 @@ public record DatabaseUrl(String jdbcUrl, Optional<String> user, Optional<String
 			return new DatabaseUrl(databaseUrl, Optional.empty(), Optional.empty());
 		}
 		if (databaseUrl.startsWith("postgresql://") || databaseUrl.startsWith("postgres://")) {
-			return fromLibpqForm(URI.create(databaseUrl));
+			try {
+				return fromLibpqForm(URI.create(databaseUrl));
+			} catch (IllegalArgumentException malformed) {
+				throw new IllegalArgumentException("DATABASE_URL is not a valid URL");
+			}
 		}
 		throw new IllegalArgumentException("DATABASE_URL must start with jdbc:postgresql:, postgresql:// or postgres://");
 	}

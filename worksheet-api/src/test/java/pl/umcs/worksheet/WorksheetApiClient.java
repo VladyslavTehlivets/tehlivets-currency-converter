@@ -64,6 +64,11 @@ final class WorksheetApiClient {
 		return send(request("/v1/worksheet/rates", worksheetKey).POST(HttpRequest.BodyPublishers.ofString(body)));
 	}
 
+	Reply keepRateChunked(String worksheetKey, String body) {
+		java.io.InputStream stream = new java.io.ByteArrayInputStream(body.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+		return send(request("/v1/worksheet/rates", Optional.of(worksheetKey)).POST(HttpRequest.BodyPublishers.ofInputStream(() -> stream)));
+	}
+
 	String keptRateId(String worksheetKey, ObjectNode rate) {
 		Reply kept = keepRate(worksheetKey, rate);
 		if (kept.status() != 201) {

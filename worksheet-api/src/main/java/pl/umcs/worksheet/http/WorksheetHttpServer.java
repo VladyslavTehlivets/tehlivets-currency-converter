@@ -112,7 +112,7 @@ public final class WorksheetHttpServer {
 
 	private void keepRate(Context ctx) {
 		WorksheetId worksheet = openedWorksheet(ctx);
-		RequestFields fields = RequestFields.of(ctx.body());
+		RequestFields fields = RequestFields.of(boundedBody(ctx));
 		var from = fields.currency("from");
 		var to = fields.currency("to");
 		var rate = fields.positiveDecimal("rate", "invalid_rate");
@@ -129,12 +129,24 @@ public final class WorksheetHttpServer {
 
 	private void convert(Context ctx) {
 		WorksheetId worksheet = openedWorksheet(ctx);
-		RequestFields fields = RequestFields.of(ctx.body());
+		RequestFields fields = RequestFields.of(boundedBody(ctx));
 		var amount = fields.positiveDecimal("amount", "invalid_amount");
 		var from = fields.currency("from");
 		var to = fields.currency("to");
 		var at = fields.moment("at");
 		ctx.json(useCases.convertOnWorksheet().convert(worksheet, amount, new Direction(from, to), at));
+	}
+
+	private static String boundedBody(Context ctx) {
+		try {
+			byte[] body = ctx.bodyInputStream().readNBytes((int) MAX_BODY_BYTES + 1);
+			if (body.length > MAX_BODY_BYTES) {
+				throw new HttpResponseException(HttpStatus.CONTENT_TOO_LARGE.getCode(), "body too large");
+			}
+			return new String(body, java.nio.charset.StandardCharsets.UTF_8);
+		} catch (java.io.IOException unreadable) {
+			throw new java.io.UncheckedIOException(unreadable);
+		}
 	}
 
 	private WorksheetId openedWorksheet(Context ctx) {
@@ -154,14 +166,13 @@ public final class WorksheetHttpServer {
 	}
 
 	private static void refuseByWorksheet(WorksheetRefusal refusal, Context ctx) {
-		String code = refusal.reason().name().toLowerCase();
 		switch (refusal.reason()) {
-			case SAME_CURRENCY -> refuse(ctx, 400, code, "to");
-			case INVALID_RATE -> refuse(ctx, 400, code, "rate");
-			case INVALID_MOMENT -> refuse(ctx, 400, code, "ratedAt");
-			case RATE_EXISTS -> refuse(ctx, 409, code, null);
-			case WORKSHEET_FULL -> refuse(ctx, 422, code, null);
-			case RATE_NOT_FOUND -> refuse(ctx, 404, code, null);
+			case SAME_CURRENCY -> refuse(ctx, 400, "same_currency", "to");
+			case INVALID_RATE -> refuse(ctx, 400, "invalid_rate", "rate");
+			case INVALID_MOMENT -> refuse(ctx, 400, "invalid_moment", "ratedAt");
+			case RATE_EXISTS -> refuse(ctx, 409, "rate_exists", null);
+			case WORKSHEET_FULL -> refuse(ctx, 422, "worksheet_full", null);
+			case RATE_NOT_FOUND -> refuse(ctx, 404, "rate_not_found", null);
 		}
 	}
 

@@ -275,6 +275,18 @@ class WorksheetApiTest {
 	}
 
 	@Test
+	void a_chunked_body_beyond_four_kilobytes_is_refused() {
+		String key = client.startWorksheet();
+		String oversizedBody = aRate().json().put("padding", "x".repeat(1_000_000)).toString();
+
+		WorksheetApiClient.Reply refused = client.keepRateChunked(key, oversizedBody);
+
+		assertEquals(413, refused.status());
+		assertEquals("body_too_large", refused.errorCode());
+		assertEquals(0, client.listRates(key).body().path("rates").size());
+	}
+
+	@Test
 	void health_reports_the_running_revision() {
 		WorksheetApiClient.Reply health = client.health();
 

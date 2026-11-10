@@ -1,9 +1,11 @@
 package pl.umcs.worksheet.http;
 
 import io.javalin.Javalin;
-import io.javalin.http.ContentTooLargeResponse;
 import io.javalin.http.Context;
+import io.javalin.http.HttpResponseException;
+import io.javalin.http.HttpStatus;
 import io.javalin.router.JavalinDefaultRouting;
+import io.javalin.router.exception.HttpResponseExceptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.umcs.worksheet.application.ConvertOnWorksheet;
@@ -85,7 +87,7 @@ public final class WorksheetHttpServer {
 		routing.exception(WorksheetRefusal.class, WorksheetHttpServer::refuseByWorksheet);
 		routing.exception(OpenWorksheet.UnknownWorksheetKey.class, (unknown, ctx) -> refuse(ctx, 401, "unauthorized", null));
 		routing.exception(RateMissing.class, WorksheetHttpServer::refuseMissingRate);
-		routing.exception(ContentTooLargeResponse.class, (tooLarge, ctx) -> refuse(ctx, 413, "body_too_large", null));
+		routing.exception(HttpResponseException.class, WorksheetHttpServer::refuseByHttp);
 		routing.exception(Exception.class, (failure, ctx) -> {
 			LOG.error("request failed on {} {}", ctx.method(), ctx.path(), failure);
 			refuse(ctx, 500, "internal", null);
@@ -160,6 +162,14 @@ public final class WorksheetHttpServer {
 			case RATE_EXISTS -> refuse(ctx, 409, code, null);
 			case WORKSHEET_FULL -> refuse(ctx, 422, code, null);
 			case RATE_NOT_FOUND -> refuse(ctx, 404, code, null);
+		}
+	}
+
+	private static void refuseByHttp(HttpResponseException response, Context ctx) {
+		if (response.getStatus() == HttpStatus.CONTENT_TOO_LARGE.getCode()) {
+			refuse(ctx, response.getStatus(), "body_too_large", null);
+		} else {
+			HttpResponseExceptionMapper.INSTANCE.handle(response, ctx);
 		}
 	}
 

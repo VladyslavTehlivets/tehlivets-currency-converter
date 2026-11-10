@@ -18,11 +18,15 @@ public class ExchangeRates {
 		return exchangeRates.stream()
 				.filter(exchangeRate -> exchangeRate.getSourceCurrency().equals(source))
 				.filter(exchangeRate -> exchangeRate.getTargetCurrency().equals(target))
-				.min(Comparator.comparingLong(o -> Duration.between(o.getDate(), date).toNanos()))
-				.orElseThrow(NotFoundExchangeRateException::new);
+				.min(nearestTo(date).thenComparing(ExchangeRate::getDate))
+				.orElseThrow(() -> new NotFoundExchangeRateException(source, target, date));
 	}
 
 	public void addExchangeRate(ExchangeRate exchangeRate) {
 		exchangeRates.add(exchangeRate);
+	}
+
+	private static Comparator<ExchangeRate> nearestTo(final Instant date) {
+		return Comparator.comparing(exchangeRate -> Duration.between(exchangeRate.getDate(), date).abs());
 	}
 }

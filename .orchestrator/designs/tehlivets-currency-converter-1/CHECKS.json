@@ -1,0 +1,23 @@
+{
+  "productScreens": 241,
+  "productLayoutChecks": 723,
+  "reviewScreens": 32,
+  "reviewLayoutChecks": 96,
+  "accessibilityScans": 273,
+  "layoutFailures": 0,
+  "accessibilityViolations": 0,
+  "localInteractionChecks": 17,
+  "interactionFailures": 0,
+  "brokenLocalLinks": 0,
+  "productionServices": "Not connected. Local sample flows only.",
+  "currency": "Proposed web worksheet. No web deployment verified.",
+  "personal": "Original soft home restored. Original project and saved revisions preserved.",
+  "uploadRefinement": {
+    "screens": 13,
+    "layoutChecks": 39,
+    "interactionChecks": 10,
+    "issues": 0,
+    "pageErrors": 0,
+    "scope": "Five product fields and eight design-system component references. Local simulated progress."
+  }
+}

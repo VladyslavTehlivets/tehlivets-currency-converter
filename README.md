@@ -12,6 +12,23 @@ Currency Converter turns an amount into another currency with dated rates that y
 
 Decisions are in [docs/adr](docs/adr). The screen record is in [docs/design-coverage.md](docs/design-coverage.md).
 
+## Architecture
+
+One Java process serves `/v1` and the static web export. Rates live in Postgres. The web client holds only its worksheet key.
+
+```mermaid
+flowchart LR
+    U[Visitor or holder in a browser] -->|HTTPS| W[Web export<br/>Next.js static]
+    W -->|"/v1 JSON"| A[Worksheet API<br/>Javalin, Java 21]
+    A --> UC[Application use cases]
+    UC --> D[Worksheet domain]
+    UC --> L[Conversion library]
+    UC --> P[(Worksheets port)]
+    DB[(Postgres)] -.implements.-> P
+```
+
+See [docs/api.md](docs/api.md) for the contract and [docs/adr](docs/adr) for decisions.
+
 ## Run locally
 
 You need JDK 21, Node 22, and Docker.

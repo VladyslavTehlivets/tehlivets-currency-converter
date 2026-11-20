@@ -16,7 +16,7 @@ Renders (not in git, uploaded as `design-render` artefacts):
 | `tehlivets-currency-converter-4/screens/<scene>-<390,1440>.png` | 22 renders, 11 scenes at 390x844 and 1440x900. |
 | `tehlivets-currency-converter-4/render.mjs` | Renders the PNGs and measures 320, 390, and 1440 px. |
 | `tehlivets-currency-converter-4/brand/` | Google G (light, 1x, 2x, 3x) and Google Sans Medium with its OFL. |
-| `tehlivets-currency-converter-4/stitch/` | Stitch exploration, when Stitch returns it. Not the build reference. |
+| Stitch project `3811033905105866836` | Created with both prompts. Both generations timed out and returned no screen. I did not regenerate, to protect the monthly quota. |
 
 ## Screens
 
@@ -44,7 +44,7 @@ One new screen: `/sign-in`. One shell change: the primary links get *Sign in*.
    - b. Notice, only after a refusal or in the empty state. First in the bezel.
    - c. The Google door, full width.
    - d. Caption, `text-caption`: *Google sends Currency Converter your verified email. Your Google password stays with Google.*
-   - e. Test door, dev build only. A separate dashed region 22px under the bezel. It is never inside the bezel.
+   - e. Test door, dev build only. A separate dashed region 22px under the bezel. It is never inside the bezel. It takes `mx-bezel`, so its text edge lines up with the text in the bezel.
 4. Shell footer, unchanged except the new link.
 
 ### The provider door (the one new primitive)
@@ -66,8 +66,9 @@ One new screen: `/sign-in`. One shell change: the primary links get *Sign in*.
 
 ### At 1440px (`idle-1440.png`)
 
-- The converter hero grid: `md:grid-cols-[1.02fr_1fr]`, `gap-17.5`, `items-center`, `min-h-142.5`.
-- Copy left, door bezel right. The door is 422px wide.
+- The converter hero columns: `md:grid-cols-[1.02fr_1fr]`, `gap-17.5`, `min-h-142.5`, `md:pt-10`.
+- Use `md:items-start`, not `items-center`. The eyebrow and the bezel share one top edge, so a notice or the test door never moves the heading.
+- Copy left, door bezel right. The door is 422px wide, its top at 243px. A notice moves it to 335 to 355px.
 - One action on the page (Hick). The door is the largest target in the right column (Fitts).
 
 ### What the person does
@@ -138,6 +139,7 @@ The page has one list (the doors) and one form (the test door).
 
 ### Motion
 
+- Notices, captions, and the test door line take `text-pretty`, so no line ends with one word.
 - Door busy: label change and spinner. Reduced motion stops the spinner through the global rule. The label still tells the state.
 - The bezel enters with `animate-enter`, as on every page. Reduced motion removes it.
 
@@ -201,3 +203,12 @@ Lenses: `frontend-design-impeccable-design-loop`, `ux-laws-overview` (Fitts, Hic
 - **Leave 18px under a lone notice.** Fixed after the first render. The last notice in the bezel has no bottom margin.
 - **A close button on notices.** Rejected (Hick). The door and a reload both clear it.
 - **Autofocus the door.** Rejected. A screen reader would skip the heading.
+
+Second pass: an independent read by the `design-taste-designer` subagent on the renders.
+
+- **Columns centred at 1440px move the heading when a notice or the test door appears.** Accepted. Columns align to the start.
+- **Test door text does not line up with the bezel text.** Accepted. The region takes `mx-bezel`.
+- **One-word last lines in notices and captions.** Accepted. `text-pretty`.
+- **The green *Explore* CTA in the header outweighs the door.** Rejected. The shell is the same on every page (Jakob). Changing it on one page breaks that. The door is the only action in `main`.
+- **The secondary test door button looks like a field.** Rejected. It is the product `secondary` Button, the same as on every other screen. Machines use this door.
+- **The busy door looks like the idle door.** Rejected. Google fixes the colours. The spinner, the label *Opening Google…*, and `disabled` carry the state.

@@ -47,6 +47,7 @@ class SignInHttpTest {
 	private static FakeGoogle google;
 	private static WorksheetApi api;
 	private static WorksheetApi apiWithoutTestDoor;
+	private static WorksheetApi apiWithoutGoogle;
 	private static HikariDataSource database;
 	private static final HttpClient HTTP = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
 
@@ -79,6 +80,7 @@ class SignInHttpTest {
 		String databaseUrl = Optional.ofNullable(System.getenv("DATABASE_URL")).filter(url -> !url.isBlank()).orElse(LOCAL_DATABASE_URL);
 		api = WorksheetApi.start(settings(databaseUrl, TEST_EMAIL, TEST_PASSWORD));
 		apiWithoutTestDoor = WorksheetApi.start(settings(databaseUrl, null, null));
+		apiWithoutGoogle = WorksheetApi.start(new WorksheetApiSettings(databaseUrl, 0, "sign-in-test", Path.of("target", "no-web-export")));
 		database = WorksheetDatabase.openMigrated(databaseUrl);
 	}
 
@@ -86,6 +88,7 @@ class SignInHttpTest {
 	static void stopEverything() {
 		api.close();
 		apiWithoutTestDoor.close();
+		apiWithoutGoogle.close();
 		database.close();
 		google.close();
 	}
@@ -351,7 +354,7 @@ class SignInHttpTest {
 
 	@Test
 	void without_google_credentials_the_door_reports_the_provider_unavailable() {
-		Reply reply = post(apiWithoutTestDoor, "/auth/google/start", "application/x-www-form-urlencoded", "next=%2F", null);
+		Reply reply = post(apiWithoutGoogle, "/auth/google/start", "application/x-www-form-urlencoded", "next=%2F", null);
 
 		assertEquals(303, reply.status());
 		assertEquals("/sign-in?refused=provider-unavailable&door=google", reply.location());

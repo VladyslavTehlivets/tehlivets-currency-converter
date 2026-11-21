@@ -2,6 +2,14 @@ package pl.umcs.worksheet;
 
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.Javalin;
+import pl.umcs.auth.application.SignInService;
+import pl.umcs.auth.google.GoogleDoor;
+import pl.umcs.auth.google.GoogleIdToken;
+import pl.umcs.auth.google.GoogleJwks;
+import pl.umcs.auth.google.GoogleOidc;
+import pl.umcs.auth.http.SignInRoutes;
+import pl.umcs.auth.persistence.PostgresMembers;
+import pl.umcs.auth.persistence.PostgresSessions;
 import pl.umcs.worksheet.application.ConvertOnWorksheet;
 import pl.umcs.worksheet.application.KeepRate;
 import pl.umcs.worksheet.application.ListRates;
@@ -34,12 +42,23 @@ public final class WorksheetApi implements AutoCloseable {
 					new KeepRate(worksheets),
 					new RemoveRate(worksheets),
 					new ConvertOnWorksheet(worksheets));
-			Javalin server = WorksheetHttpServer.create(useCases, settings.revision(), settings.webExportDir()).start(settings.port());
+			Javalin server = WorksheetHttpServer.create(useCases, settings.revision(), settings.webExportDir(), signInRoutes(settings, database)).start(settings.port());
 			return new WorksheetApi(database, server);
 		} catch (RuntimeException startFailure) {
 			database.close();
 			throw startFailure;
 		}
+	}
+
+	private static SignInRoutes signInRoutes(WorksheetApiSettings settings, HikariDataSource database) {
+		var signIn = settings.signIn();
+		java.time.Clock clock = java.time.Clock.systemUTC();
+		java.net.http.HttpClient http = java.net.http.HttpClient.newHttpClient();
+		GoogleOidc oidc = new GoogleOidc(signIn.googleClientIds(), signIn.googleClientSecret(), java.net.URI.create(signIn.publicBaseUrl() + "/auth/google/callback"), GoogleOidc.AUTHORIZATION, signIn.googleTokenEndpoint(), signIn.googleJwksUri());
+		GoogleDoor google = new GoogleDoor(oidc, http, new GoogleIdToken(oidc.clientIds(), new GoogleJwks(oidc.jwksUri(), http, clock), clock));
+		PostgresSessions sessions = new PostgresSessions(database);
+		return new SignInRoutes(new SignInService(new PostgresMembers(database), sessions, clock), sessions, google,
+				new SignInRoutes.TestDoor(signIn.testDoorEmail(), signIn.testDoorPassword()), clock);
 	}
 
 	public int port() {

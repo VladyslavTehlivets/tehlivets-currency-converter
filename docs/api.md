@@ -81,7 +81,43 @@ The conversion uses the nearest rate in each direction (ADR 0003). Nearest is ab
 
 | Variable | Default | Use |
 |---|---|---|
-| `DATABASE_URL` | none | Postgres URL. Flyway runs `V1__worksheets.sql` at start. |
+| `DATABASE_URL` | none | Postgres URL. Flyway runs the migrations at start. |
 | `PORT` | `7070` | HTTP port. |
 | `REVISION` | `local` | Reported by `/v1/health`. |
 | `WEB_EXPORT_DIR` | `web/out` | Static web export. The server skips it when the directory is absent. |
+| `GOOGLE_CLIENT_IDS` | none | Comma list of this environment's Google client IDs. Empty closes the door. |
+| `GOOGLE_CLIENT_SECRET` | none | The client secret for the code exchange. |
+| `PUBLIC_BASE_URL` | `http://127.0.0.1:7070` | Origin that Google returns to. The callback is `/auth/google/callback`. |
+| `DEV_TEST_DOOR_EMAIL`, `DEV_TEST_DOOR_PASSWORD` | none | The dev test identity (ADR-019). Set both only in dev. Unset closes the test door. |
+| `GOOGLE_TOKEN_ENDPOINT`, `GOOGLE_JWKS_URI` | Google's own | Test overrides. Leave unset in every real environment. |
+
+## Sign in (ADR 0008)
+
+People sign in with Google. Each environment has its own OAuth client. The server refuses a token whose `aud` names another client.
+
+### Session cookie
+
+A session sits in `__Host-session`: HttpOnly, Secure, SameSite=Lax, `Path=/`, 30 days. Every sign-in issues a fresh id.
+
+### Routes
+
+| Route | Auth | Success | Refusals |
+|---|---|---|---|
+| `POST /v1/sessions/nonce` | none | `201 {nonce}`. One use, five minutes. | none |
+| `POST /v1/sessions` | none | `201 {session:{id,expiresAt}}` and the cookie | `401 {error:{code}}` with a closed code |
+| `POST /auth/google/start` | none | `303` to Google. Form field `next`. Sets `__Host-sign-in` for ten minutes. | `303` to the sign-in page with a code |
+| `GET /auth/google/callback` | binder cookie | `303` to `next`, with the session cookie | `303 /sign-in?refused=<code>&door=google` |
+| `GET /auth/test/door` | none | `200` only where the dev test door is set | `404` |
+| `POST /auth/test/sign-in` | none | `303` to `next`, with the session cookie. Form fields `email`, `password`, `next`. | `303` with `not-invited`, or `404` |
+
+`POST /v1/sessions` takes `{"provider":"google","idToken":"<jwt>","nonce":"<from /v1/sessions/nonce>"}`. The server verifies the signature against the Google JWKS, then checks `iss`, `aud`, `exp`, and `nonce`. Native clients use it.
+
+### Refusal codes
+
+`cancelled`, `state-mismatch`, `token-for-another-client`, `email-unverified`, `not-invited`, `provider-unavailable`. A refusal never carries free text or an email address.
+
+### Members
+
+A member is a provider and a subject (Google `sub`). Email never names a member. A provider identity joins an existing member only through an email the provider marked verified. One identity belongs to one member (`UNIQUE (provider, subject)`).
+
+`next` must start with one slash and never `//` or `/\`. Anything else becomes `/`.

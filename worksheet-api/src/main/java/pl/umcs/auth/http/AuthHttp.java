@@ -102,7 +102,7 @@ public final class AuthHttp {
 		StateCookie binder = new StateCookie(randomToken(), randomToken(), randomToken() + randomToken(), next.get(), clock.instant());
 		ctx.res().addHeader("Set-Cookie", binderCookie(encode(binder), StateCookie.LIFETIME.toSeconds()));
 		ctx.header("Cache-Control", "no-store");
-		ctx.redirect(authorizationUrl(binder));
+		ctx.redirect(authorizationUrl(binder, "select_account".equals(ctx.queryParam("prompt"))));
 	}
 
 	private void finishGoogle(Context ctx) {
@@ -174,7 +174,7 @@ public final class AuthHttp {
 		}
 	}
 
-	private String authorizationUrl(StateCookie binder) {
+	private String authorizationUrl(StateCookie binder, boolean chooseAccount) {
 		return GOOGLE_AUTHORIZATION
 				+ "?client_id=" + encodeUrl(settings.googleClientIds().iterator().next())
 				+ "&redirect_uri=" + encodeUrl(settings.callbackUrl())
@@ -183,7 +183,8 @@ public final class AuthHttp {
 				+ "&state=" + binder.state()
 				+ "&nonce=" + binder.nonce()
 				+ "&code_challenge=" + challengeFor(binder.verifier())
-				+ "&code_challenge_method=S256";
+				+ "&code_challenge_method=S256"
+				+ (chooseAccount ? "&prompt=select_account" : "");
 	}
 
 	static String challengeFor(String verifier) {

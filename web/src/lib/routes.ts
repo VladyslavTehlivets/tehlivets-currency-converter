@@ -5,6 +5,7 @@ export const RESULT_ROUTE = '/result'
 export const RATES_ROUTE = '/rates'
 export const RATE_ADD_ROUTE = '/rates/new'
 export const METHOD_ROUTE = '/how-it-works'
+export const SIGN_IN_ROUTE = '/sign-in'
 
 const withQuery = (route: string, query: Record<string, string>) => {
   const written = new URLSearchParams(query).toString()

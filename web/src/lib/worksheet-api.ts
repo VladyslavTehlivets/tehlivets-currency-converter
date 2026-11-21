@@ -151,3 +151,12 @@ export async function convert(request: ConversionRequest): Promise<WorksheetAnsw
   const response = await send('/v1/worksheet/conversions', 'POST', worksheetKey, request)
   return answerFrom(response, (answered) => answered.json())
 }
+
+export type TestDoorAnswer = 'signed-in' | 'refused' | 'unreachable'
+
+export async function signInThroughTestDoor(email: string, password: string): Promise<TestDoorAnswer> {
+  const response = await send('/auth/test-door', 'POST', null, { email, password })
+  if (!response) return 'unreachable'
+  if (response.ok) return 'signed-in'
+  return response.status === 403 || response.status === 404 ? 'refused' : 'unreachable'
+}

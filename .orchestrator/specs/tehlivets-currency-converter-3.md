@@ -85,7 +85,7 @@ Trades away:
 | [000](../../docs/adr/000-charter-drivers.md) | new | Charter drivers for this product. |
 | [0001](../../docs/adr/0001-a-java-api-serves-the-worksheet-and-its-web-client.md) | touched | Auth routes live in the same container. |
 | [0002](../../docs/adr/0002-rates-live-in-a-server-worksheet-opened-by-a-key.md) | touched | Worksheets stay keyed. |
-| [0005](../../docs/adr/0005-people-sign-in-through-google-or-github.md) | new | People sign in through Google only. |
+| [0008](../../docs/adr/0008-people-sign-in-through-google-or-github.md) | new | People sign in through Google only. |
 | Portfolio ADR-050 | cited | The standard this follows. |
 | Portfolio ADR-019 | cited | Dev test identity. |
 

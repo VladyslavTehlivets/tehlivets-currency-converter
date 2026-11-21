@@ -13,13 +13,28 @@ Autonomous engineering calls. Each one is the decision of the named role under t
 | No upload control ships. | R6.1 covers FamilyAssistant and Teplo. This product has no file workflow. | Plan, Not doing |
 | The API refuses same-currency conversion. | The library fails or routes through PLN for it. | Plan, Domain model |
 
-## 2026-11-20 · designer role · tehlivets-currency-converter-4
+## 2026-11-20 · designer role · tehlivets-currency-converter-3
 
 | Decision | Why | Record |
 |---|---|---|
-| `DESIGN.md` now lives at the repository root, copied from the approved R6 file. | ADR-054 names one root reference for every role. The item-1 copy stays as the approved snapshot. | `DESIGN.md` |
-| The Google button values enter `DESIGN.md` as one provider door group. | Google fixes them. Only the door primitive can use them. | `DESIGN.md`, Provider door group |
-| The sign-in door sits in the product bezel and hero grid, not a bare column. | `DESIGN.md` puts every work surface in a bezel. The product is light only. | Design, Not doing |
-| Refusal notices use two tones and no icons. | The palette has no amber, and the product has no icon set. | Design, States |
-| Dev on http shows no Google door and offers the test door. | Google cannot return to an http LAN address. | Design, States |
-| No signed-in indicator or sign-out in this item. | The plan names no session read route. | Design, Not doing |
+| The sign-in page mirrors the converter hero, with the door in a `Bezel`. | Every Soft R6 work surface sits in a bezel. The product is light only. | Design, Screens |
+| The Google values enter `DESIGN.md` as one `provider-door` token group. | Google fixes its button colours. Only `ProviderDoor` may use them. | `DESIGN.md`, Provider door |
+| The footer link is the only entry point. There is no signed-in indicator. | Nothing needs an account yet. The session cookie is HttpOnly. | Design, Not doing |
+| The test door loads only after `GET /auth/test/door` returns 200. | One static export serves dev and production. Production downloads no test door code. | Design, States |
+
+## 2026-11-21 · implementer role · tehlivets-currency-converter-3
+
+| Decision | Why | Record |
+|---|---|---|
+| The dev test door compares a configured password. The `members` table has no password hash. | One dev identity needs no stored secret. Invariant 5 holds: production sets no password. | ADR 0008 |
+| `POST /v1/sessions/nonce` stores nonces in Postgres and deletes on read. | The nonce survives a restart and works on any instance. | ADR 0008 |
+| `Assertion` has `ProviderAssertion` for Google and GitHub, and `TestDoorAssertion`. | One rule links both providers. The GitHub door itself stays out of scope. | Plan, Not doing |
+
+
+## 2026-11-21 · implementer role · tehlivets-currency-converter-4
+
+| Decision | Why | Record |
+|---|---|---|
+| Item 4 builds no second sign-in. It keeps the item 3 build from `base-functionality`. | Item 3 already merged the same standard: Google door, `POST /v1/sessions`, test door, tests. A second build clashes on `V2` migrations and routes. | ADR 0006, this entry |
+| The implementer dropped its own parallel build by revert commits, and kept the history. | No force push. The revert is visible. | Git log |
+| Item 4 adds only the tests the item 3 suite lacks. | The brief lists one guard that item 3 lacks: a provider's colours and mark stay in their own door. | Tests |

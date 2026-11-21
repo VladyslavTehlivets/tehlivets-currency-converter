@@ -39,6 +39,14 @@ You need JDK 21, Node 22, and Docker.
 4. Start the API: `DATABASE_URL=postgresql://worksheets:worksheets@127.0.0.1:5446/worksheets java -jar worksheet-api/target/worksheet-api.jar`
 5. Open `http://127.0.0.1:7070`.
 
+## Run the dev environment
+
+The dev environment runs store and API in Docker on the factory machine. See [ADR 0007](docs/adr/0007-the-dev-environment-runs-as-a-compose-service.md).
+
+1. Start it: `docker compose up -d --build --wait`
+2. Open `http://10.13.13.4:7070`.
+3. After a reboot, run step 1 again if the `api` container did not start.
+
 ## Test
 
 | Suite | Command |

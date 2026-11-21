@@ -52,13 +52,14 @@ public final class WorksheetHttpServer {
 		this.revision = revision;
 	}
 
-	public static Javalin create(UseCases useCases, String revision, Path webExportDir) {
+	public static Javalin create(UseCases useCases, String revision, Path webExportDir, pl.umcs.auth.http.SignInRoutes signInRoutes) {
 		WorksheetHttpServer server = new WorksheetHttpServer(useCases, revision);
 		return Javalin.create(config -> {
 			config.showJavalinBanner = false;
 			config.http.maxRequestSize = MAX_BODY_BYTES;
 			config.router.mount(routing -> {
 				server.registerApi(routing);
+				signInRoutes.register(routing);
 				if (Files.isDirectory(webExportDir)) {
 					WebExport webExport = new WebExport(webExportDir);
 					routing.get("/", webExport::serve);
@@ -194,6 +195,6 @@ public final class WorksheetHttpServer {
 	}
 
 	private static boolean isApiPath(Context ctx) {
-		return ctx.path().equals("/v1") || ctx.path().startsWith("/v1/");
+		return ctx.path().equals("/v1") || ctx.path().startsWith("/v1/") || ctx.path().startsWith("/auth/");
 	}
 }

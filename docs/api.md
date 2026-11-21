@@ -91,7 +91,7 @@ The conversion uses the nearest rate in each direction (ADR 0003). Nearest is ab
 | `DEV_TEST_DOOR_EMAIL`, `DEV_TEST_DOOR_PASSWORD` | none | The dev test identity (ADR-019). Set both only in dev. Unset closes the test door. |
 | `GOOGLE_TOKEN_ENDPOINT`, `GOOGLE_JWKS_URI` | Google's own | Test overrides. Leave unset in every real environment. |
 
-## Sign in (ADR 0005)
+## Sign in (ADR 0008)
 
 People sign in with Google. Each environment has its own OAuth client. The server refuses a token whose `aud` names another client.
 

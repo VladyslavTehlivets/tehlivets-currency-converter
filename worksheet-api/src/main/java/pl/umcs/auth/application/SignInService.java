@@ -3,6 +3,7 @@ package pl.umcs.auth.application;
 import pl.umcs.auth.domain.Assertion;
 import pl.umcs.auth.domain.Member;
 import pl.umcs.auth.domain.Session;
+import pl.umcs.auth.domain.SignInRefusal;
 
 import java.time.Clock;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public final class SignInService {
 			return known.get();
 		}
 		if (!assertion.emailVerified()) {
-			throw new pl.umcs.auth.domain.SignInRefusal(pl.umcs.auth.domain.SignInRefusal.Code.EMAIL_UNVERIFIED);
+			throw new SignInRefusal(SignInRefusal.Code.EMAIL_UNVERIFIED);
 		}
 		Optional<Member> sameEmail = members.findByVerifiedEmail(assertion.email());
 		if (sameEmail.isPresent()) {

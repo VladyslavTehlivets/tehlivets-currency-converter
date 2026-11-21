@@ -136,7 +136,7 @@ Use named primitive styles for every button and button-like link.
 
 ## Provider door
 
-Reason: ADR 0005 adds Google sign-in. Google fixes the colours, font, and mark of its button.
+Reason: ADR 0008 adds Google sign-in. Google fixes the colours, font, and mark of its button.
 These values form one named group. Only the `ProviderDoor` primitive may use the group.
 The values keep Google's own notation, so a reviewer can compare them with Google's page.
 The product has a light theme only, so the group has no dark values.
@@ -160,5 +160,5 @@ The door is 44px tall, full width, pill radius, with a 20px mark 10px from the l
 Keep the approved typography, bezel materials, and restrained spring motion.
 Keep exact amounts and requested dates visible with the selected rates.
 Do not add uploads, live quotes, invented deployments, or another color scheme.
-Add accounts only through the provider door below (ADR 0005).
+Add accounts only through the provider door below (ADR 0008).
 Do not treat prototype sample data or local storage as a production service.

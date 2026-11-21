@@ -26,7 +26,7 @@ Autonomous engineering calls. Each one is the decision of the named role under t
 
 | Decision | Why | Record |
 |---|---|---|
-| The dev test door compares a configured password. The `members` table has no password hash. | One dev identity needs no stored secret. Invariant 5 holds: production sets no password. | ADR 0005 |
-| `POST /v1/sessions/nonce` stores nonces in Postgres and deletes on read. | The nonce survives a restart and works on any instance. | ADR 0005 |
+| The dev test door compares a configured password. The `members` table has no password hash. | One dev identity needs no stored secret. Invariant 5 holds: production sets no password. | ADR 0008 |
+| `POST /v1/sessions/nonce` stores nonces in Postgres and deletes on read. | The nonce survives a restart and works on any instance. | ADR 0008 |
 | `Assertion` has `ProviderAssertion` for Google and GitHub, and `TestDoorAssertion`. | One rule links both providers. The GitHub door itself stays out of scope. | Plan, Not doing |
 

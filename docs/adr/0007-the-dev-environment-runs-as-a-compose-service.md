@@ -35,6 +35,8 @@ Only (a) keeps the whole start path in the repository and under review.
 
 - `web/src/dev-environment.test.ts` pins the descriptor. A changed address, port, store, or health check turns it red.
 - Postgres stays on loopback port 5446. The e2e server and local runs keep working.
+- Known limit: `./mvnw verify` and e2e write test worksheets into the same store. Give dev its own database when that data matters.
+- Build steps reach the host loopback, which includes Postgres on 5446. Remove `network: host` when bridge DNS works.
 - `/v1/health` reports revision `local` in this container. The image does not carry its commit yet.
 - Known limit: at boot, Docker can start the container before `wg0` holds 10.13.13.4. The port bind then fails, and `restart: unless-stopped` does not retry it. Run `docker compose up -d --wait` again after a reboot. A reconciler like yana ADR 050 can fix this later.
 

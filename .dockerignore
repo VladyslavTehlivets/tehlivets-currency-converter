@@ -7,3 +7,7 @@ web/out
 web/.next
 web/test-results
 web/playwright-report
+.env*
+*.pem
+*.key
+.claude

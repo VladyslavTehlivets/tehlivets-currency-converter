@@ -1,6 +1,6 @@
 # ADR 0005: People sign in through Google or GitHub
 
-Status: accepted, 2026-11-19, tehlivets-currency-converter-3. Cites ADR-050 of project-orchestrator and `docs/adr/000-charter-drivers.md`.
+Status: superseded by ADR 0008. Cites ADR-050 of project-orchestrator and `docs/adr/000-charter-drivers.md`.
 
 ## Context
 

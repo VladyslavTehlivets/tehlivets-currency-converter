@@ -1,6 +1,6 @@
 # 0006 · Sign-in is an application service with two adapters
 
-Status: accepted · 2026-11-19 · item tehlivets-currency-converter-4 · author: architect role
+Status: superseded by ADR 0008 and ADR 0009 · 2026-11-19 · item tehlivets-currency-converter-4 · author: architect role
 
 ## Context
 

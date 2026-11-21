@@ -7,8 +7,8 @@ Currency Converter turns an amount into another currency with dated rates that y
 | Module | Purpose |
 |---|---|
 | `conversion/` | Java library. Nearest dated rate, PLN routing, exact decimal legs, missing-rate errors. |
-| `worksheet-api/` | Java API `/v1`. Worksheets, dated rates, conversions, Postgres storage. |
-| `web/` | Next.js static export in Soft Family R6. Nine views. Served by the API process. |
+| `worksheet-api/` | Java API `/v1`. Worksheets, dated rates, conversions, Postgres storage. Sign-in in `pl.umcs.auth` (ADR 0008). |
+| `web/` | Next.js static export in Soft Family R6. Nine views and a sign-in page. Served by the API process. |
 
 ## Build and test
 
@@ -39,6 +39,14 @@ Run `docker compose up -d --build --wait`. It serves `http://10.13.13.4:7070` (A
 - Do not hand-edit `docs/architecture.md`. It is generated.
 - API contract lives in `docs/api.md`. Keep it current.
 - The web client calls the API only through `web/src/lib/worksheet-api.ts`.
+
+## Sign-in
+
+- People sign in with Google. Never add a password form to production.
+- Sign-in is the application service `SignInService`. Routes are adapters.
+- Never key a member by email. Use provider and subject.
+- Refusals use only the closed codes in `docs/api.md`.
+- The dev test door needs `DEV_TEST_DOOR_EMAIL` and `DEV_TEST_DOOR_PASSWORD`. Never set them in production.
 
 ## Architecture
 

@@ -8,13 +8,13 @@ Currency Converter turns an amount into another currency with dated rates that y
 |---|---|
 | `conversion/` | Java library. Nearest dated rate, PLN routing, exact decimal legs, missing-rate errors. |
 | `worksheet-api/` | Java API `/v1`. Worksheets, dated rates, conversions, Postgres storage. See [docs/api.md](docs/api.md). |
-| `web/` | Next.js static export in Soft Family R6. Nine views. Served by the API process. |
+| `web/` | Next.js static export in Soft Family R6. Nine views and a sign-in page. Served by the API process. |
 
 Decisions are in [docs/adr](docs/adr). The screen record is in [docs/design-coverage.md](docs/design-coverage.md).
 
 ## Architecture
 
-One Java process serves `/v1` and the static web export. Rates live in Postgres. The web client holds only its worksheet key.
+One Java process serves `/v1`, the sign-in routes, and the static web export. Rates, members, and sessions live in Postgres. People sign in with Google (ADR 0008). The sign-in service returns a session. The web redirect and `POST /v1/sessions` are two adapters.
 
 ```mermaid
 flowchart LR
@@ -25,6 +25,11 @@ flowchart LR
     UC --> L[Conversion library]
     UC --> P[(Worksheets port)]
     DB[(Postgres)] -.implements.-> P
+    W -->|"/auth redirect"| S[Sign-in service]
+    A --> S
+    S --> G[Google OIDC]
+    S --> M[(Members and sessions ports)]
+    DB -.implements.-> M
 ```
 
 See [docs/api.md](docs/api.md) for the contract and [docs/adr](docs/adr) for decisions.
@@ -38,6 +43,8 @@ You need JDK 21, Node 22, and Docker.
 3. Build the web export: `cd web && npm ci && npm run build`
 4. Start the API: `DATABASE_URL=postgresql://worksheets:worksheets@127.0.0.1:5446/worksheets java -jar worksheet-api/target/worksheet-api.jar`
 5. Open `http://127.0.0.1:7070`.
+
+Set `GOOGLE_CLIENT_IDS`, `GOOGLE_CLIENT_SECRET`, and `PUBLIC_BASE_URL` to open the Google door. See [docs/api.md](docs/api.md). Set `DEV_TEST_DOOR_EMAIL` and `DEV_TEST_DOOR_PASSWORD` only in dev to open the test door.
 
 ## Run the dev environment
 

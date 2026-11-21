@@ -30,3 +30,11 @@ Autonomous engineering calls. Each one is the decision of the named role under t
 | `POST /v1/sessions/nonce` stores nonces in Postgres and deletes on read. | The nonce survives a restart and works on any instance. | ADR 0008 |
 | `Assertion` has `ProviderAssertion` for Google and GitHub, and `TestDoorAssertion`. | One rule links both providers. The GitHub door itself stays out of scope. | Plan, Not doing |
 
+
+## 2026-11-21 · implementer role · tehlivets-currency-converter-4
+
+| Decision | Why | Record |
+|---|---|---|
+| Item 4 builds no second sign-in. It keeps the item 3 build from `base-functionality`. | Item 3 already merged the same standard: Google door, `POST /v1/sessions`, test door, tests. A second build clashes on `V2` migrations and routes. | ADR 0006, this entry |
+| The implementer dropped its own parallel build by revert commits, and kept the history. | No force push. The revert is visible. | Git log |
+| Item 4 adds only the tests the item 3 suite lacks. | The brief lists one guard that item 3 lacks: a provider's colours and mark stay in their own door. | Tests |

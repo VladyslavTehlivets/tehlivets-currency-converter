@@ -6,3 +6,9 @@
 /last-session-tail.txt
 /last-sighting.txt
 /evidence/
+/designs/*/screens/
+/designs/*/stitch/
+/designs/*/brand/
+/designs/*/fonts/
+/designs/tehlivets-currency-converter-4/*.html
+/designs/tehlivets-currency-converter-4/*.mjs

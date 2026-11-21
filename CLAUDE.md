@@ -28,6 +28,10 @@ Start Postgres first: `docker compose up -d --wait postgres`.
 4. Start the API: `DATABASE_URL=postgresql://worksheets:worksheets@127.0.0.1:5446/worksheets java -jar worksheet-api/target/worksheet-api.jar`
 5. Open `http://127.0.0.1:7070`.
 
+## Run the dev environment
+
+Run `docker compose up -d --build --wait`. It serves `http://10.13.13.4:7070` (ADR 0007).
+
 ## Conventions
 
 - Java 21. Lombok for value objects. No comments in code.

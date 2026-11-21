@@ -31,6 +31,9 @@ The product has no accounts today. Worksheets are opened by a random key. The fa
 - A `sessions` table or signed session cookie holds the session.
 - Worksheets stay keyed by their existing key. Ownership by member is out of scope.
 - The declaration lives in `.orchestrator/sign-in.json`.
+- Sessions live in a `sessions` table. A client nonce lives in `session_nonces` and is deleted when read.
+- The dev test door checks a password held in `DEV_TEST_DOOR_PASSWORD`. No password hash is stored.
+- A second subject at a provider that a member already links is refused as `not-invited`.
 
 ## Drivers
 

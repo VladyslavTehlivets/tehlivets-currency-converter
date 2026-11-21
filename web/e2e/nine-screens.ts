@@ -109,13 +109,6 @@ export const NINE_SCREENS: ScreenState[] = [
     },
   },
   {
-    name: 'sign-in',
-    open: async (page) => {
-      await page.goto('/sign-in')
-      await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible()
-    },
-  },
-  {
     name: 'method',
     open: async (page) => {
       await page.goto('/how-it-works')

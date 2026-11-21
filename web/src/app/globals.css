@@ -30,11 +30,6 @@
   --color-rule: #d4d8d077;
   --color-glass: #ffffffa8;
   --color-menu: #faf9f3fa;
-  --color-provider-door: #FFFFFF;
-  --color-provider-door-edge: #747775;
-  --color-provider-door-ink: #1F1F1F;
-  --color-provider-door-pressed: #F2F2F2;
-  --font-provider-door: "Google Sans", var(--font-body);
 
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Instrument Sans", sans-serif;

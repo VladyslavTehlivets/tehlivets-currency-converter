@@ -1,7 +1,6 @@
 package pl.umcs.worksheet.http;
 
 import io.javalin.Javalin;
-import pl.umcs.auth.http.AuthHttp;
 import io.javalin.http.Context;
 import io.javalin.http.HttpResponseException;
 import io.javalin.http.HttpStatus;
@@ -53,24 +52,16 @@ public final class WorksheetHttpServer {
 		this.revision = revision;
 	}
 
-	public static Javalin create(UseCases useCases, AuthHttp auth, String revision, Path webExportDir) {
+	public static Javalin create(UseCases useCases, String revision, Path webExportDir) {
 		WorksheetHttpServer server = new WorksheetHttpServer(useCases, revision);
 		return Javalin.create(config -> {
 			config.showJavalinBanner = false;
 			config.http.maxRequestSize = MAX_BODY_BYTES;
 			config.router.mount(routing -> {
 				server.registerApi(routing);
-				auth.register(routing);
 				if (Files.isDirectory(webExportDir)) {
 					WebExport webExport = new WebExport(webExportDir);
 					routing.get("/", webExport::serve);
-					routing.get(AuthHttp.SIGN_IN_PATH, ctx -> {
-						if (auth.hasLiveSession(ctx)) {
-							auth.redirectSignedInVisitor(ctx);
-						} else {
-							webExport.serve(ctx);
-						}
-					});
 					routing.get("/*", ctx -> {
 						if (isApiPath(ctx)) {
 							refuse(ctx, 404, "not_found", null);
